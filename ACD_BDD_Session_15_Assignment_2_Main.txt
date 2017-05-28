@@ -1,0 +1,25 @@
+/* CREATE TABLE IN HIVE TO HOLD THE DATA */
+
+create table olympics_data(athlete_name string,age int,country string,year int,closing_date string,sports_name string,
+gold_medals int,silver_medals int,bronze_medals int,total_medals int) 
+row forlat delimited fields terminated by '\t' lines terminated by '\n';
+
+load data local inpath '/home/neeraj/Desktop/olympix_data.csv' overwrite into table olympics_data;
+
+/* Problem:1-> Write a Hive program to find the number of medals won by each country in swimming */
+
+select country,sum(total_medals) as total from olympics_data 
+where UPPER(sports_name) == UPPER('swimming') group by country order by total desc;
+
+/* Problem:2-> Write a Hive program to find the number of medals that India won year wise. */
+
+select country,year ,sum(total_medals) as total from olympics_data 
+where (UPPER(country) == UPPER('india')) group by (country,year) order by total desc;
+
+/* Problem:3-> Write a Hive Program to find the total number of medals each country won. */
+
+select country,sum(total_medals) as total from olympics_data group by country order by total desc;
+
+/* Problem:4-> Write a Hive program to find the number of gold medals each country won. */
+
+select country ,sum(gold_medals) as total from olympics_data group by country order by total;

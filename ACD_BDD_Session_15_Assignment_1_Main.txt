@@ -1,0 +1,39 @@
+/* create a table with TEXTFILE format */
+
+create table emp (id int,name varchar(30),city varchar(30),designation varchar(50),salary bigint)
+comment 'created table to store emp data'
+partitioned by ( country varchar(50))
+row format delimited fields terminated by ',' STORED as textfile 
+tblproperties("transactional" = "true");
+
+load data local inpath '/home/neeraj/Desktop/emp.txt' overwrite into table emp parition(country = "India");
+
+
+/* create a table with SEQUENCEFILE format */
+
+create table emp1 (id int,name varchar(30),city varchar(30),designation varchar(50),salary bigint)
+comment 'created table to store emp1 data'
+row format delimited fields terminated by ',' STORED as SEQUENCEFILE 
+tblproperties("transactional" = "true");
+
+insert overwrite table emp1 select * from emp;
+
+
+/* create a table with ORC format */
+
+create table emp2 (id int,name varchar(30),city varchar(30),designation varchar(50),salary bigint)
+comment 'created table to store emp2 data'
+row format delimited fields terminated by ',' STORED as ORC 
+tblproperties("transactional" = "true");
+
+Insert overwrite table emp2 select * from emp;
+
+
+/* create a table with RCFILE format */
+
+create table emp3 (id int,name varchar(30),city varchar(30),designation varchar(50),salary bigint)
+comment 'created table to store emp3 data'
+row format delimited fields terminated by ',' STORED as RCFILE 
+tblproperties("transactional" = "true");
+
+Insert overwrite table emp3 select * from emp;
